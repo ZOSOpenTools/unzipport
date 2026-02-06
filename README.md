@@ -4,6 +4,14 @@
 
 Tool for unzipping compressed files
 
+## Upstream
+
+This package is a port of the upstream **UnZip** project.
+
+- **Upstream source**: https://github.com/LuaDist/unzip.git
+- **Upstream license**: Info-ZIP License  
+  https://github.com/LuaDist/unzip/blob/master/LICENSE
+
 # Installation and Usage
 
 Use the zopen package manager ([QuickStart Guide](https://zopen.community/#/Guides/QuickStart)) to install:
