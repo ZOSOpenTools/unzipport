@@ -1,5 +1,5 @@
 diff --git a/unix/unix.c b/unix/unix.c
-index efa97fc..cde9bc5 100644
+index 816e3da..c11b342 100644
 --- a/unix/unix.c
 +++ b/unix/unix.c
 @@ -30,6 +30,11 @@
@@ -32,7 +32,7 @@ index efa97fc..cde9bc5 100644
 +#include <sys/types.h>
 +#include <dirent.h>
 +#include <stdbool.h>
-+#include "zos-io.h"
++#include <zos.h>
 +#endif
  
  /**********************/

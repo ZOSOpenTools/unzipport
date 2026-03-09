@@ -1,0 +1,55 @@
+diff --git a/unix/configure b/unix/configure
+index 785d8dd..0ceb108 100755
+--- a/unix/configure
++++ b/unix/configure
+@@ -24,6 +24,18 @@ CFLAGS_OPT=''
+ CFLAGS_BZ=''
+ BZLF=''
+ 
++# External flags can be set via environment variables:
++# CFLAGS_EXTRA, LDFLAGS_EXTRA, LIBS_EXTRA
++# These will be used in configure tests and appended to final flags
++
++# Apply external flags to configure tests
++if [ -n "${CFLAGS_EXTRA}" ]; then
++  CFLAGS="${CFLAGS} ${CFLAGS_EXTRA}"
++  CFLAGSR="${CFLAGSR} ${CFLAGS_EXTRA}"
++fi
++[ -n "${LDFLAGS_EXTRA}" ] && LFLAGS1="${LFLAGS1} ${LDFLAGS_EXTRA}"
++[ -n "${LIBS_EXTRA}" ] && LFLAGS2="${LFLAGS2} ${LIBS_EXTRA}"
++
+ echo "Check C compiler operation"
+ cat > conftest.c << _EOF_
+ int main()
+@@ -401,7 +413,10 @@ ln -s "${temp_link}" "${temp_file}" && \
+ rm -f "${temp_file}"
+ 
+ echo Check for memset
+-echo "int main(){ char k; memset(&k,0,0); return 0; }" > conftest.c
++cat > conftest.c << _EOF_
++#include <string.h>
++int main(){ char k; memset(&k,0,0); return 0; }
++_EOF_
+ $CC -o conftest conftest.c >/dev/null 2>/dev/null
+ [ $? -ne 0 ] && CFLAGSR="${CFLAGSR} -DZMEM"
+ 
+@@ -419,6 +434,7 @@ $CC $CFLAGS -c conftest.c >/dev/null 2>/dev/null
+ 
+ echo Check for directory libraries
+ cat > conftest.c << _EOF_
++#include <dirent.h>
+ int main() { return closedir(opendir(".")); }
+ _EOF_
+ 
+@@ -439,7 +455,10 @@ fi
+ 
+ # Dynix/ptx 1.3 needed this
+ echo Check for readlink
+-echo "int main(){ return readlink(); }" > conftest.c
++cat > conftest.c << _EOF_
++#include <unistd.h>
++int main(){ return readlink(); }
++_EOF_
+ $CC -o conftest conftest.c >/dev/null 2>/dev/null
+ if [ $? -ne 0 ]; then
+   $CC -o conftest conftest.c -lseq >/dev/null 2>/dev/null
